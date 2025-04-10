@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Order;
 
 use App\Enums\OrderStatus;
-use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,13 +15,7 @@ class UpdateOrderStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        /** @var Order $order */
-        $order = $this->route('order');
-
-        /** @var User $user */
-        $user = $this->user();
-
-        return $order->canBeUpdatedBy($user);
+        return true;
     }
 
     /**

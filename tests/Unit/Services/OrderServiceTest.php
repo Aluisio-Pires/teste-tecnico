@@ -7,7 +7,6 @@ use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderStatusChanged;
 use App\Services\OrderService;
-use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -64,22 +63,6 @@ class OrderServiceTest extends TestCase
         Notification::assertSentTo($owner, OrderStatusChanged::class);
     }
 
-    public function test_update_order_status_throws_exception_when_updated_by_owner(): void
-    {
-        $owner = User::factory()->create();
-        $order = Order::factory()->create([
-            'user_id' => $owner->id,
-            'status' => OrderStatus::REQUESTED->value,
-        ]);
-
-        Auth::shouldReceive('user')->andReturn($owner);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage(__('You cannot update the status of your own order'));
-
-        $this->orderService->updateStatus($order, OrderStatus::APPROVED->value);
-    }
-
     public function test_update_order_status_does_not_send_notification_when_status_not_changed(): void
     {
         $owner = User::factory()->create();
@@ -110,21 +93,6 @@ class OrderServiceTest extends TestCase
         $this->assertTrue($result);
         $this->assertEquals(OrderStatus::CANCELED->value, $order->status->value);
         Notification::assertSentTo($owner, OrderStatusChanged::class);
-    }
-
-    public function test_cancel_order_returns_false_when_already_canceled(): void
-    {
-        $owner = User::factory()->create();
-        $order = Order::factory()->create([
-            'user_id' => $owner->id,
-            'status' => OrderStatus::CANCELED->value,
-        ]);
-
-        $result = $this->orderService->cancel($order);
-
-        $this->assertFalse($result);
-        $this->assertEquals(OrderStatus::CANCELED->value, $order->status->value);
-        Notification::assertNotSentTo($owner, OrderStatusChanged::class);
     }
 
     public function test_list_orders_returns_all_orders_when_no_filters(): void

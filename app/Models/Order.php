@@ -57,32 +57,6 @@ class Order extends Model
     }
 
     /**
-     * Get the user that owns the order.
-     *
-     * @return BelongsTo<User, $this>
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Check if the order can be canceled.
-     */
-    public function canBeCanceled(): bool
-    {
-        return $this->status !== OrderStatus::CANCELED;
-    }
-
-    /**
-     * Check if the order status can be updated by the given user.
-     */
-    public function canBeUpdatedBy(User $user): bool
-    {
-        return $this->user_id !== $user->id;
-    }
-
-    /**
      * @param  Builder<Order>  $query
      */
     #[Scope]
@@ -112,5 +86,15 @@ class Order extends Model
         if ($destination) {
             $query->where('destination', 'like', "%{$destination}%");
         }
+    }
+
+    /**
+     * Get the user that owns the order.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

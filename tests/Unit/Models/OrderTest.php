@@ -21,38 +21,6 @@ class OrderTest extends TestCase
         $this->assertEquals($user->id, $order->user->id);
     }
 
-    public function test_can_be_canceled_returns_true_when_not_canceled(): void
-    {
-        $order = Order::factory()->create(['status' => OrderStatus::REQUESTED->value]);
-        $this->assertTrue($order->canBeCanceled());
-
-        $order = Order::factory()->create(['status' => OrderStatus::APPROVED->value]);
-        $this->assertTrue($order->canBeCanceled());
-    }
-
-    public function test_can_be_canceled_returns_false_when_already_canceled(): void
-    {
-        $order = Order::factory()->create(['status' => OrderStatus::CANCELED->value]);
-        $this->assertFalse($order->canBeCanceled());
-    }
-
-    public function test_can_be_updated_by_returns_false_for_order_owner(): void
-    {
-        $user = User::factory()->create();
-        $order = Order::factory()->create(['user_id' => $user->id]);
-
-        $this->assertFalse($order->canBeUpdatedBy($user));
-    }
-
-    public function test_can_be_updated_by_returns_true_for_non_owner(): void
-    {
-        $owner = User::factory()->create();
-        $otherUser = User::factory()->create();
-        $order = Order::factory()->create(['user_id' => $owner->id]);
-
-        $this->assertTrue($order->canBeUpdatedBy($otherUser));
-    }
-
     public function test_scope_with_status_filters_by_status(): void
     {
         Order::factory()->create(['status' => OrderStatus::REQUESTED->value]);

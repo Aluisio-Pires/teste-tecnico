@@ -159,7 +159,7 @@ class OrderTest extends TestCase
      */
     public function test_update_status_changes_order_status(): void
     {
-        $authUser = User::factory()->create();
+        $authUser = User::factory()->create()->assignRole('admin');
         $targetUser = User::factory()->create();
         $order = Order::factory()->create([
             'user_id' => $targetUser->id,
@@ -248,7 +248,7 @@ class OrderTest extends TestCase
 
     public function test_cancel_returns_error_when_already_canceled(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->assignRole('admin');
         $order = Order::factory()->create([
             'user_id' => $user->id,
             'status' => OrderStatus::CANCELED->value,
@@ -257,10 +257,10 @@ class OrderTest extends TestCase
         $this->authRequest(
             'post',
             route('api.orders.destroy', $order),
-            Response::HTTP_UNPROCESSABLE_ENTITY,
+            Response::HTTP_FORBIDDEN,
             [],
             $user
-        )->assertJsonPath('message', __('This order cannot be canceled'));
+        );
     }
 
     public function test_unauthorized_access_is_rejected(): void

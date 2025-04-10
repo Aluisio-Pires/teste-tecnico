@@ -10,9 +10,9 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
 use Exception;
+use Gate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
@@ -77,6 +77,8 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderStatusRequest $request, Order $order): OrderResource
     {
+        Gate::authorize('update', $order);
+
         $order = $this->orderService->updateStatus($order, $request->string('status'));
 
         return new OrderResource($order);
@@ -91,13 +93,9 @@ class OrderController extends Controller
      */
     public function destroy(Order $order): JsonResponse
     {
-        $result = $this->orderService->cancel($order);
+        Gate::authorize('delete', $order);
 
-        if (! $result) {
-            return response()->json([
-                'message' => __('This order cannot be canceled'),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        $this->orderService->cancel($order);
 
         return response()->json([
             'message' => __('Order canceled successfully'),

@@ -142,8 +142,9 @@ class OrderStatusChangedTest extends TestCase
             'status' => OrderStatus::REQUESTED,
         ]);
 
-        $order->status = OrderStatus::APPROVED;
-        $order->save();
+        $order->update([
+            'status' => OrderStatus::APPROVED,
+        ]);
 
         $this->user->notify(new OrderStatusChanged($order));
 
@@ -169,8 +170,9 @@ class OrderStatusChangedTest extends TestCase
             'status' => OrderStatus::REQUESTED,
         ]);
 
-        $order->status = OrderStatus::CANCELED;
-        $order->save();
+        $order->update([
+            'status' => OrderStatus::CANCELED,
+        ]);
 
         $this->user->notify(new OrderStatusChanged($order));
 

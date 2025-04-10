@@ -37,16 +37,10 @@ class OrderService
      */
     public function updateStatus(Order $order, string $status): Order
     {
-        /** @var User $user */
-        $user = auth()->user();
-
-        if (! $order->canBeUpdatedBy($user)) {
-            throw new \Exception(__('You cannot update the status of your own order'));
-        }
-
         $oldStatus = $order->status;
-        $order->status = OrderStatus::from($status);
-        $order->save();
+        $order->update([
+            'status' => OrderStatus::from($status),
+        ]);
 
         if (($order->status === OrderStatus::APPROVED || $order->status === OrderStatus::CANCELED) && $oldStatus !== $order->status) {
             $order->user->notify(new OrderStatusChanged($order));
@@ -57,13 +51,10 @@ class OrderService
 
     public function cancel(Order $order): bool
     {
-        if (! $order->canBeCanceled()) {
-            return false;
-        }
-
         $oldStatus = $order->status;
-        $order->status = OrderStatus::CANCELED;
-        $order->save();
+        $order->update([
+            'status' => OrderStatus::CANCELED,
+        ]);
 
         if ($oldStatus !== OrderStatus::CANCELED) {
             $order->user->notify(new OrderStatusChanged($order));
