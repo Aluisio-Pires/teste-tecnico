@@ -16,7 +16,7 @@ class AuthTest extends TestCase
         $rawUser['password'] = 'password123';
         $rawUser['password_confirmation'] = 'password123';
 
-        $response = $this->postJson(route('auth.register'), $rawUser);
+        $response = $this->postJson(route('api.auth.register'), $rawUser);
 
         $response->assertCreated()
             ->assertJsonStructure(['user', 'token']);
@@ -24,7 +24,7 @@ class AuthTest extends TestCase
 
     public function test_register_validation_fails(): void
     {
-        $response = $this->postJson(route('auth.register'), []);
+        $response = $this->postJson(route('api.auth.register'), []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['name', 'email', 'password']);
@@ -38,7 +38,7 @@ class AuthTest extends TestCase
             'password' => bcrypt($password),
         ]);
 
-        $response = $this->postJson(route('auth.login'), [
+        $response = $this->postJson(route('api.auth.login'), [
             'email' => $user->email,
             'password' => $password,
         ]);
@@ -53,13 +53,13 @@ class AuthTest extends TestCase
             'password' => bcrypt('correct-password'),
         ]);
 
-        $response = $this->postJson(route('auth.login'), [
+        $response = $this->postJson(route('api.auth.login'), [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
 
         $response->assertStatus(401)
-            ->assertJson(['error' => 'Unauthorized']);
+            ->assertJson(['error' => __('Unauthorized')]);
     }
 
     public function test_user_can_get_authenticated_user(): void
@@ -68,7 +68,7 @@ class AuthTest extends TestCase
         $token = auth('api')->login($user);
 
         $response = $this->withToken($token)
-            ->getJson(route('auth.me'));
+            ->getJson(route('api.auth.me'));
 
         $response->assertOk()
             ->assertJson(['id' => $user->id, 'email' => $user->email]);
@@ -80,10 +80,10 @@ class AuthTest extends TestCase
         $token = auth('api')->login($user);
 
         $response = $this->withToken($token)
-            ->postJson(route('auth.logout'));
+            ->postJson(route('api.auth.logout'));
 
         $response->assertOk()
-            ->assertJson(['message' => 'Successfully logged out']);
+            ->assertJson(['message' => __('Successfully logged out')]);
     }
 
     public function test_token_can_be_refreshed(): void
@@ -92,7 +92,7 @@ class AuthTest extends TestCase
         $token = auth('api')->login($user);
 
         $response = $this->withToken($token)
-            ->postJson(route('auth.refresh'));
+            ->postJson(route('api.auth.refresh'));
 
         $response->assertOk()
             ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);

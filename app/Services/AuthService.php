@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -38,12 +37,12 @@ class AuthService
     public function login(array $credentials): JsonResponse
     {
         /** @var JWTGuard $guard */
-        $guard = Auth::guard('api');
+        $guard = auth()->guard('api');
 
         $token = $guard->attempt($credentials);
 
         if (! is_string($token)) {
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['error' => __('Unauthorized')], Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->respondWithToken($token, $guard);
@@ -52,22 +51,22 @@ class AuthService
     public function me(): JsonResponse
     {
         /** @var User $user */
-        $user = Auth::guard('api')->user();
+        $user = auth()->guard('api')->user();
 
         return response()->json($user);
     }
 
     public function logout(): JsonResponse
     {
-        Auth::guard('api')->logout();
+        auth()->guard('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => __('Successfully logged out')]);
     }
 
     public function refresh(): JsonResponse
     {
         /** @var JWTGuard $guard */
-        $guard = Auth::guard('api');
+        $guard = auth()->guard('api');
 
         $newToken = $guard->refresh();
 

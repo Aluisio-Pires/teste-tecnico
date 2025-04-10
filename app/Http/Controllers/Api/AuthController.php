@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function __construct(protected AuthService $authService) {}
 
     /**
-     * Cria uma nova conta.
+     * Cria uma conta.
      *
      * @Request({
      *        tags: Autenticação
@@ -28,7 +28,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Cria uma nova sessão.
+     * Cria uma sessão.
      *
      * @Request({
      *         tags: Autenticação
@@ -67,7 +67,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Cria um novo token para a conta autenticada.
+     * Cria um ‘token’ para a conta autenticada.
      *
      * @Request({
      *         tags: Autenticação
