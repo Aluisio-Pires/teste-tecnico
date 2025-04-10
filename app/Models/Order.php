@@ -21,10 +21,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  * @property OrderStatus $status
  * @property-read User $user
- *
- * @method static Builder<Order>|static withStatus(string $status)
- * @method static Builder<Order>|static inDateRange(?string $startDate, ?string $endDate)
- * @method static Builder<Order>|static withDestination(?string $destination)
  */
 class Order extends Model
 {
@@ -87,47 +83,34 @@ class Order extends Model
     }
 
     /**
-     * Scope a query to only include orders with a specific status.
-     *
      * @param  Builder<Order>  $query
-     * @return Builder<Order>
      */
     #[Scope]
-    public function scopeWithStatus(Builder $query, string $status): Builder
+    protected function withStatus(Builder $query, string $status): void
     {
-        return $query->where('status', $status);
+        $query->where('status', $status);
     }
 
     /**
-     * Scope a query to filter orders by date range.
-     *
      * @param  Builder<Order>  $query
-     * @return Builder<Order>
      */
     #[Scope]
-    public function scopeInDateRange(Builder $query, ?string $startDate, ?string $endDate): Builder
+    protected function inDateRange(Builder $query, ?string $startDate, ?string $endDate): void
     {
         if ($startDate && $endDate) {
-            return $query->whereBetween('departure_date', [$startDate, $endDate])
+            $query->whereBetween('departure_date', [$startDate, $endDate])
                 ->orWhereBetween('return_date', [$startDate, $endDate]);
         }
-
-        return $query;
     }
 
     /**
-     * Scope a query to filter orders by destination.
-     *
      * @param  Builder<Order>  $query
-     * @return Builder<Order>
      */
     #[Scope]
-    public function scopeWithDestination(Builder $query, ?string $destination): Builder
+    protected function withDestination(Builder $query, ?string $destination): void
     {
         if ($destination) {
-            return $query->where('destination', 'like', "%{$destination}%");
+            $query->where('destination', 'like', "%{$destination}%");
         }
-
-        return $query;
     }
 }
