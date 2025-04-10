@@ -1,0 +1,309 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel",
+        "description": "Documentation for the Application API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080/api",
+            "description": "Laravel Server #1"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "summary": "Cria uma nova conta.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": [
+                                null
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "(Unauthorized) Invalid or missing Access Token"
+                    }
+                },
+                "tags": [
+                    "Autentica\u00e7\u00e3o"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 6
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "summary": "Cria uma nova sess\u00e3o.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": [
+                                null
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "(Unauthorized) Invalid or missing Access Token"
+                    }
+                },
+                "tags": [
+                    "Autentica\u00e7\u00e3o"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "summary": "Recupera os dados da conta autenticada.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "401": {
+                        "description": "(Unauthorized) Invalid or missing Access Token"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": [
+                                null
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Autentica\u00e7\u00e3o"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "summary": "Invalida a sess\u00e3o da conta autenticada.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "401": {
+                        "description": "(Unauthorized) Invalid or missing Access Token"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": [
+                                null
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Autentica\u00e7\u00e3o"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "summary": "Cria um novo token para a conta autenticada.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "401": {
+                        "description": "(Unauthorized) Invalid or missing Access Token"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": [
+                                null
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Autentica\u00e7\u00e3o"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [],
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "name": "id",
+                        "type_name": "bigint",
+                        "type": "bigint unsigned",
+                        "collation": null,
+                        "nullable": false,
+                        "default": null,
+                        "auto_increment": true,
+                        "comment": null,
+                        "generation": null
+                    },
+                    "name": {
+                        "name": "name",
+                        "type_name": "varchar",
+                        "type": "varchar(255)",
+                        "collation": "utf8mb4_unicode_ci",
+                        "nullable": false,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null
+                    },
+                    "email": {
+                        "name": "email",
+                        "type_name": "varchar",
+                        "type": "varchar(255)",
+                        "collation": "utf8mb4_unicode_ci",
+                        "nullable": false,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null
+                    },
+                    "email_verified_at": {
+                        "name": "email_verified_at",
+                        "type_name": "timestamp",
+                        "type": "timestamp",
+                        "collation": null,
+                        "nullable": true,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null,
+                        "example": "2025-04-10 11:46:07"
+                    },
+                    "password": {
+                        "name": "password",
+                        "type_name": "varchar",
+                        "type": "varchar(255)",
+                        "collation": "utf8mb4_unicode_ci",
+                        "nullable": false,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null
+                    },
+                    "remember_token": {
+                        "name": "remember_token",
+                        "type_name": "varchar",
+                        "type": "varchar(100)",
+                        "collation": "utf8mb4_unicode_ci",
+                        "nullable": true,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null
+                    },
+                    "created_at": {
+                        "name": "created_at",
+                        "type_name": "timestamp",
+                        "type": "timestamp",
+                        "collation": null,
+                        "nullable": true,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null,
+                        "example": "2025-04-10 11:46:07"
+                    },
+                    "updated_at": {
+                        "name": "updated_at",
+                        "type_name": "timestamp",
+                        "type": "timestamp",
+                        "collation": null,
+                        "nullable": true,
+                        "default": null,
+                        "auto_increment": false,
+                        "comment": null,
+                        "generation": null,
+                        "example": "2025-04-10 11:46:07"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "password"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
