@@ -1,0 +1,13 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    # Level 10 is the highest level
+    level: max
+
+    treatPhpDocTypesAsCertain: false
+    # checkModelAppends: false
