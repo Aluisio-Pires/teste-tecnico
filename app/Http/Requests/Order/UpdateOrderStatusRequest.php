@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Order;
 
 use App\Enums\OrderStatus;
@@ -8,7 +10,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateOrderStatusRequest extends FormRequest
+final class UpdateOrderStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Notifications;
 
 use App\Enums\OrderStatus;
@@ -12,7 +14,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class OrderStatusChangedTest extends TestCase
+final class OrderStatusChangedTest extends TestCase
 {
     use RefreshDatabase;
 

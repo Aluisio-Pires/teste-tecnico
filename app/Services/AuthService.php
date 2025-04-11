@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\User;
@@ -9,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\JWTGuard;
 
-class AuthService
+final class AuthService
 {
     /**
      * @param  array{name: string, email: string, password: string}  $data

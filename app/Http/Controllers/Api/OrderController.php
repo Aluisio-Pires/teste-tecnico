@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -15,7 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Symfony\Component\HttpFoundation\Response;
 
-class OrderController extends Controller
+final class OrderController extends Controller
 {
     public function __construct(protected OrderService $orderService) {}
 
@@ -29,10 +31,10 @@ class OrderController extends Controller
     public function index(IndexOrderRequest $request): AnonymousResourceCollection
     {
         $orders = $this->orderService->list(
-            $request->string('status'),
-            $request->string('start_date'),
-            $request->string('end_date'),
-            $request->string('destination'),
+            $request->string('status')->value(),
+            $request->string('start_date')->value(),
+            $request->string('end_date')->value(),
+            $request->string('destination')->value(),
         );
 
         return OrderResource::collection($orders);
@@ -82,7 +84,7 @@ class OrderController extends Controller
     {
         Gate::authorize('update', $order);
 
-        $order = $this->orderService->updateStatus($order, $request->string('status'));
+        $order = $this->orderService->updateStatus($order, $request->string('status')->value());
 
         return new OrderResource($order);
     }

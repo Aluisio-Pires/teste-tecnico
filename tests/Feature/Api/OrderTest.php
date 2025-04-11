@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Api;
 
 use App\Enums\OrderStatus;
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\Notification;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class OrderTest extends TestCase
+final class OrderTest extends TestCase
 {
     use RefreshDatabase;
 

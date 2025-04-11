@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\OrderStatus;
@@ -13,16 +15,16 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
 /**
- * @property int $user_id
- * @property string $destination
- * @property Carbon $departure_date
- * @property Carbon $return_date
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property OrderStatus $status
+ * @property-read int $user_id
+ * @property-read string $destination
+ * @property-read Carbon $departure_date
+ * @property-read Carbon $return_date
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
+ * @property-read OrderStatus $status
  * @property-read User $user
  */
-class Order extends Model
+final class Order extends Model
 {
     /** @use HasFactory<Factory<Order>> */
     use HasFactory, Notifiable;
@@ -39,6 +41,16 @@ class Order extends Model
         'return_date',
         'status',
     ];
+
+    /**
+     * Get the user that owns the order.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * The attributes that should be cast.
@@ -86,15 +98,5 @@ class Order extends Model
         if ($destination) {
             $query->where('destination', 'like', "%{$destination}%");
         }
-    }
-
-    /**
-     * Get the user that owns the order.
-     *
-     * @return BelongsTo<User, $this>
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

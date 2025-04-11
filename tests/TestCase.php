@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use App\Models\User;
@@ -9,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function authRequest($method, $route, $status = Response::HTTP_OK, $request = [], $user = null): TestResponse
+    final public function authRequest($method, $route, $status = Response::HTTP_OK, $request = [], $user = null): TestResponse
     {
         return $this->withHeaders([
             'Authorization' => 'Bearer '.$this->generateToken($user),
@@ -21,7 +23,7 @@ abstract class TestCase extends BaseTestCase
         );
     }
 
-    public function simpleRequest($method, $route, $status = Response::HTTP_OK, $request = []): TestResponse
+    final public function simpleRequest($method, $route, $status = Response::HTTP_OK, $request = []): TestResponse
     {
         $response = $this->json($method,
             $route,
@@ -40,7 +42,7 @@ abstract class TestCase extends BaseTestCase
         return $response;
     }
 
-    public function simpleTest($method, $route, $status = Response::HTTP_OK, $request = [], $user = null, $protected = true)
+    final public function simpleTest($method, $route, $status = Response::HTTP_OK, $request = [], $user = null, $protected = true)
     {
         if ($protected) {
             $this->isProtected($method, $route, $request);
@@ -49,7 +51,7 @@ abstract class TestCase extends BaseTestCase
         return $this->authRequest($method, $route, $status, $request, $user);
     }
 
-    public function isProtected($method, $route, $request = [])
+    final public function isProtected($method, $route, $request = [])
     {
         if (auth()->check()) {
             foreach (config('auth.guards') as $guardName => $guardConfig) {
@@ -68,7 +70,7 @@ abstract class TestCase extends BaseTestCase
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    public function generateToken($user = null): string
+    final public function generateToken($user = null): string
     {
         $user = $user ?: User::factory()->create();
 

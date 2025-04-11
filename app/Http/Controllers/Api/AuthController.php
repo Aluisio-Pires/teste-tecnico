@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -8,7 +10,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 
-class AuthController extends Controller
+final class AuthController extends Controller
 {
     public function __construct(protected AuthService $authService) {}
 

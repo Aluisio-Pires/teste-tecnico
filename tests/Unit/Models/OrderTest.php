@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Models;
 
 use App\Enums\OrderStatus;
@@ -8,7 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class OrderTest extends TestCase
+final class OrderTest extends TestCase
 {
     use RefreshDatabase;
 

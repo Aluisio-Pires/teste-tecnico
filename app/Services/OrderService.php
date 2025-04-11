@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Enums\OrderStatus;
@@ -9,7 +11,7 @@ use App\Notifications\OrderStatusChanged;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class OrderService
+final class OrderService
 {
     /**
      * Create a new order.
@@ -76,7 +78,7 @@ class OrderService
     public function list(?string $status = null, ?string $startDate = null, ?string $endDate = null, ?string $destination = null): LengthAwarePaginator
     {
         /** @var Builder<Order> $query */
-        $query = Order::query();
+        $query = Order::query()->with('user');
 
         /** @var User $user */
         $user = auth()->user();

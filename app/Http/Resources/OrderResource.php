@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\Order;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderResource extends JsonResource
+final class OrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,15 +21,12 @@ class OrderResource extends JsonResource
         /** @var Order $order */
         $order = $this->resource;
 
-        /** @var User $user */
-        $user = $order->user;
-
         return [
             'id' => $order->id,
             'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
+                'id' => $order->user->id,
+                'name' => $order->user->name,
+                'email' => $order->user->email,
             ],
             'destination' => $order->destination,
             'departure_date' => $order->departure_date instanceof Carbon
