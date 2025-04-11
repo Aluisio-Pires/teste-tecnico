@@ -222,8 +222,9 @@ class OrderTest extends TestCase
     /**
      * @throws Exception
      */
-    public function test_cancel_cancels_approved_order(): void
+    public function test_cancel_cancels_approved_order_by_admin(): void
     {
+        $admin = User::factory()->create()->assignRole('admin');
         $user = User::factory()->create();
         $order = Order::factory()->create([
             'user_id' => $user->id,
@@ -235,7 +236,7 @@ class OrderTest extends TestCase
             route('api.orders.destroy', $order),
             Response::HTTP_OK,
             [],
-            $user
+            $admin
         )->assertJsonPath('data.status', OrderStatus::CANCELED->value);
 
         $this->assertDatabaseHas('orders', [
@@ -244,6 +245,33 @@ class OrderTest extends TestCase
         ]);
 
         Notification::assertSentTo($user, OrderStatusChanged::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function test_cancel_dont_cancels_approved_order(): void
+    {
+        $user = User::factory()->create();
+        $order = Order::factory()->create([
+            'user_id' => $user->id,
+            'status' => OrderStatus::APPROVED->value,
+        ]);
+
+        $this->authRequest(
+            'post',
+            route('api.orders.destroy', $order),
+            Response::HTTP_UNPROCESSABLE_ENTITY,
+            [],
+            $user
+        );
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'status' => OrderStatus::APPROVED->value,
+        ]);
+
+        Notification::assertNotSentTo($user, OrderStatusChanged::class);
     }
 
     public function test_cancel_returns_error_when_already_canceled(): void

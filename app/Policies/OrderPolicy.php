@@ -16,7 +16,7 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return $user->hasPermissionTo('view-all-orders') || $order->user_id === $user->id;
+        return $user->hasPermissionTo('view-orders') || $order->user_id === $user->id;
     }
 
     /**

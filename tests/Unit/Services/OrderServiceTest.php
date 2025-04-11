@@ -83,6 +83,9 @@ class OrderServiceTest extends TestCase
     public function test_cancel_order_returns_true_and_updates_status_when_cancellable(): void
     {
         $owner = User::factory()->create();
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
         $order = Order::factory()->create([
             'user_id' => $owner->id,
             'status' => OrderStatus::APPROVED->value,
@@ -173,5 +176,22 @@ class OrderServiceTest extends TestCase
 
         $this->assertCount(1, $orders);
         $this->assertEquals('Paris', $orders->first()->destination);
+    }
+
+    public function test_cancel_order_returns_false_when_already_approved(): void
+    {
+        $owner = User::factory()->create();
+        $this->actingAs($owner);
+
+        $order = Order::factory()->create([
+            'user_id' => $owner->id,
+            'status' => OrderStatus::APPROVED->value,
+        ]);
+
+        $result = $this->orderService->cancel($order);
+
+        $this->assertFalse($result);
+        $this->assertEquals(OrderStatus::APPROVED->value, $order->status->value);
+        Notification::assertNotSentTo($owner, OrderStatusChanged::class);
     }
 }

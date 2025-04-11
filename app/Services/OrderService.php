@@ -52,6 +52,13 @@ class OrderService
     public function cancel(Order $order): bool
     {
         $oldStatus = $order->status;
+        /** @var User $user */
+        $user = auth()->user();
+
+        if ($oldStatus === OrderStatus::APPROVED && ! $user->hasPermissionTo('delete-order')) {
+            return false;
+        }
+
         $order->update([
             'status' => OrderStatus::CANCELED,
         ]);
@@ -74,7 +81,7 @@ class OrderService
         /** @var User $user */
         $user = auth()->user();
 
-        if (! $user->hasPermissionTo('view-all-orders')) {
+        if (! $user->hasPermissionTo('view-orders')) {
             $query->where('user_id', $user->id);
         }
 

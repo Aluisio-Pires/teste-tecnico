@@ -17,7 +17,7 @@ return new class extends Migration
         $permissions = [
             'update-order',
             'delete-order',
-            'view-all-orders',
+            'view-orders',
         ];
 
         foreach ($permissions as $permission) {

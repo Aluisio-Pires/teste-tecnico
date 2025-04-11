@@ -13,6 +13,7 @@ use Exception;
 use Gate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
@@ -97,7 +98,13 @@ class OrderController extends Controller
     {
         Gate::authorize('delete', $order);
 
-        $this->orderService->cancel($order);
+        $result = $this->orderService->cancel($order);
+
+        if (! $result) {
+            return response()->json([
+                'message' => __('This order cannot be canceled'),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         return response()->json([
             'message' => __('Order canceled successfully'),
