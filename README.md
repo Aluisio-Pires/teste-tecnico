@@ -1,6 +1,6 @@
 # API de Gerenciamento de Ordens de Viagem
 
-<p align="center">
+<p>
   <img src="https://img.shields.io/badge/PHP-8.4-777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.4">
   <img src="https://img.shields.io/badge/Laravel-12.8-FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12.8">
   <img src="https://img.shields.io/badge/MySQL-8.0-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL 8.0">
@@ -34,9 +34,21 @@ Esta API fornece um sistema para o gerenciamento de Ordens de Viagem. Ela permit
 
 ## Instalação
 
+### Orientações Iniciais
+- A documentação a seguir é baseada no sistema Linux.
+
+Faça o clone do repositório
 ```bash
 git clone https://github.com/Aluisio-Pires/teste-tecnico.git
+```
+
+Entre na pasta do projeto
+```bash
 cd teste-tecnico
+```
+
+Copie o arquivo `.env.example` para `.env`
+```bash
 cp .env.example .env
 ```
 
@@ -53,11 +65,16 @@ docker run --rm \
 
 ### Crie um alias para o Sail
 
+#### Se você usa o Bash
+
 ```bash
 # Bash
 echo "alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'" >> ~/.bashrc
 source ~/.bashrc
+```
 
+#### Se você usa o Zsh
+```bash
 # Zsh
 echo "alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'" >> ~/.zshrc
 source ~/.zshrc
@@ -83,11 +100,19 @@ sail artisan jwt:secret
 
 ### Rode as migrações e seeds (opcional)
 
+#### Migrações
+
 ```bash
 sail artisan migrate
-sail artisan db:seed
+```
+#### Seeders (opcional)
 
-# Ou
+```bash
+sail artisan db:seed
+```
+#### Rodando os dois juntos
+
+```bash
 sail artisan migrate --seed 
 ```
 
@@ -95,7 +120,7 @@ sail artisan migrate --seed
 
 ## Testes
 
-### Rodar todos os testes
+### Rodar todos os testes (Gera um relatório de cobertura dentro da pasta `coverage`)
 
 ```bash
 sail artisan test
@@ -109,8 +134,13 @@ sail artisan test --coverage
 
 ### Testes por suíte
 
+#### Apenas os testes de funcionalidade
 ```bash
 sail artisan test --testsuite=Feature
+```
+
+#### Apenas os testes unitários
+```bash
 sail artisan test --testsuite=Unit
 ```
 
@@ -124,19 +154,42 @@ sail artisan test --testsuite=Unit
 sail pint
 ```
 
+ou
+
+```bash
+./vendor/bin/pint
+```
+ou 
+
+```bash
+sail artisan pint
+```
+
 ### Rector
 
 ```bash
-sail rector
+./vendor/bin/rector
+```
+
+ou
+
+```bash
+sail artisan rector
 ```
 
 ### PHPStan
 
 ```bash
-sail phpstan analyse
+./vendor/bin/phpstan analyse
 ```
 
-### Tudo de uma vez
+ou
+
+```bash
+sail artisan phpstan
+```
+
+### Para usar os três comandos juntos, em sequência, utilize o comando abaixo:
 
 ```bash
 sail artisan analyse
@@ -168,7 +221,7 @@ sail artisan analyse
 Autenticação via JWT. Para acessar endpoints protegidos:
 
 1. Registre-se ou faça login.
-2. Utilize o token retornado no header:
+2. Utilize no header o token retornado no login:
 
 ```http
 Authorization: Bearer {token}
@@ -202,14 +255,14 @@ Authorization: Bearer {token}
 
 ## Deploy em Produção
 
-1. Defina as variáveis no `.env`:
+1. Defina as variáveis de ambiente no `.env`:
 
 ```dotenv
 APP_ENV=production
 APP_DEBUG=false
 ```
 
-2. Gere os arquivos otimizados:
+2. Otimizar o projeto realizando cache de arquivos:
 
 ```bash
 sail artisan optimize
