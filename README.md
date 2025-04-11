@@ -205,20 +205,20 @@ sail artisan analyse
 
 ## Variáveis de Ambiente
 
-| Variável | Descrição | Padrão |
-|----------|-----------|--------|
-| `APP_PORT` | Porta da aplicação Laravel | 80 |
-| `VITE_PORT` | Porta do Vite | 5173 |
-| `DB_CONNECTION` | Driver do banco | mysql |
-| `DB_HOST` | Host do banco | mysql |
-| `DB_PORT` | Porta do banco | 3306 |
+| Variável | Descrição | Padrão        |
+|----------|-----------|---------------|
+| `APP_PORT` | Porta da aplicação Laravel | 80            |
+| `VITE_PORT` | Porta do Vite | 5173          |
+| `DB_CONNECTION` | Driver do banco | mysql         |
+| `DB_HOST` | Host do banco | mysql         |
+| `DB_PORT` | Porta do banco | 3306          |
 | `DB_DATABASE` | Nome do banco | teste_tecnico |
-| `DB_USERNAME` | Usuário | root |
-| `DB_PASSWORD` | Senha | |
-| `FORWARD_DB_PORT` | Redirecionamento do MySQL | 3306 |
-| `FORWARD_REDIS_PORT` | Redirecionamento do Redis | 6379 |
-| `JWT_SECRET` | Chave do JWT | |
-| `JWT_TTL` | Tempo de vida do token (minutos) | |
+| `DB_USERNAME` | Usuário | sail          |
+| `DB_PASSWORD` | Senha | password              |
+| `FORWARD_DB_PORT` | Redirecionamento do MySQL | 3306          |
+| `FORWARD_REDIS_PORT` | Redirecionamento do Redis | 6379          |
+| `JWT_SECRET` | Chave do JWT |               |
+| `JWT_TTL` | Tempo de vida do token (minutos) |               |
 
 ---
 
