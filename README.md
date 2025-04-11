@@ -116,6 +116,12 @@ sail artisan db:seed
 sail artisan migrate --seed 
 ```
 
+### Coloque a fila para trabalhar
+
+```bash
+sail artisan queue:work
+```
+
 ---
 
 ## Testes
