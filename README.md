@@ -81,14 +81,20 @@ sail artisan key:generate
 sail artisan jwt:secret
 ```
 
-### Rode as migrações e seeds (opcional)
+### Rode as migrações
 
 ```bash
 sail artisan migrate
-sail artisan db:seed
+sail artisan db:seed #opcional
 
-# Ou
+# Ou (opcional)
 sail artisan migrate --seed 
+```
+
+### Coloque a fila para trabalhar
+
+```bash
+sail artisan queue:work
 ```
 
 ---
