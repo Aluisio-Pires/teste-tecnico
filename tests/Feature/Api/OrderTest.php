@@ -114,8 +114,8 @@ final class OrderTest extends TestCase
             $request->toArray(),
             $user
         )->assertJsonPath('data.destination', $request->destination)
-            ->assertJsonPath('data.departure_date', (string) $request->departure_date->format('d/m/Y'))
-            ->assertJsonPath('data.return_date', (string) $request->return_date->format('d/m/Y'))
+            ->assertJsonPath('data.departure_date', $request->departure_date->format('d/m/Y'))
+            ->assertJsonPath('data.return_date', $request->return_date->format('d/m/Y'))
             ->assertJsonPath('data.status', OrderStatus::REQUESTED->value)
             ->assertJsonPath('data.user.id', $user->id);
 

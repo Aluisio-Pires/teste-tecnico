@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Models\Order;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,10 +29,10 @@ final class OrderResource extends JsonResource
                 'email' => $order->user->email,
             ],
             'destination' => $order->destination,
-            'departure_date' => $order->departure_date instanceof Carbon
+            'departure_date' => $order->departure_date instanceof CarbonImmutable
                 ? $order->departure_date->format('d/m/Y')
                 : $order->departure_date,
-            'return_date' => $order->return_date instanceof Carbon
+            'return_date' => $order->return_date instanceof CarbonImmutable
                 ? $order->return_date->format('d/m/Y')
                 : $order->return_date,
             'status' => $order->status,
