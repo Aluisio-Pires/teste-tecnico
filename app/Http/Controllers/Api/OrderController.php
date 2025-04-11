@@ -63,6 +63,8 @@ class OrderController extends Controller
      */
     public function show(Order $order): OrderResource
     {
+        Gate::authorize('view', $order);
+
         return new OrderResource($order);
     }
 

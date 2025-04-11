@@ -97,7 +97,12 @@ class OrderServiceTest extends TestCase
 
     public function test_list_orders_returns_all_orders_when_no_filters(): void
     {
-        Order::factory()->count(3)->create();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Order::factory()->count(3)->create([
+            'user_id' => $user->id,
+        ]);
 
         $orders = $this->orderService->list();
 
@@ -106,9 +111,21 @@ class OrderServiceTest extends TestCase
 
     public function test_list_orders_filters_by_status(): void
     {
-        Order::factory()->create(['status' => OrderStatus::REQUESTED->value]);
-        Order::factory()->create(['status' => OrderStatus::APPROVED->value]);
-        Order::factory()->create(['status' => OrderStatus::CANCELED->value]);
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Order::factory()->create([
+            'user_id' => $user->id,
+            'status' => OrderStatus::REQUESTED->value,
+        ]);
+        Order::factory()->create([
+            'user_id' => $user->id,
+            'status' => OrderStatus::APPROVED->value,
+        ]);
+        Order::factory()->create([
+            'user_id' => $user->id,
+            'status' => OrderStatus::CANCELED->value,
+        ]);
 
         $orders = $this->orderService->list(OrderStatus::APPROVED->value);
 
@@ -118,11 +135,16 @@ class OrderServiceTest extends TestCase
 
     public function test_list_orders_filters_by_date_range(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
         Order::factory()->create([
+            'user_id' => $user->id,
             'departure_date' => '2025-01-01',
             'return_date' => '2025-01-10',
         ]);
         Order::factory()->create([
+            'user_id' => $user->id,
             'departure_date' => '2025-02-01',
             'return_date' => '2025-02-10',
         ]);
@@ -135,8 +157,17 @@ class OrderServiceTest extends TestCase
 
     public function test_list_orders_filters_by_destination(): void
     {
-        Order::factory()->create(['destination' => 'New York']);
-        Order::factory()->create(['destination' => 'Paris']);
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Order::factory()->create([
+            'user_id' => $user->id,
+            'destination' => 'New York',
+        ]);
+        Order::factory()->create([
+            'user_id' => $user->id,
+            'destination' => 'Paris',
+        ]);
 
         $orders = $this->orderService->list(null, null, null, 'Paris');
 

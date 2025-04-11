@@ -15,12 +15,21 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->has(
-            Order::factory()->count(100)->state([
+            Order::factory()->count(5)->state([
                 'status' => OrderStatus::REQUESTED,
             ])
         )->create([
             'name' => 'Regular User',
             'email' => 'user@example.com',
+        ]);
+
+        User::factory()->has(
+            Order::factory()->count(5)->state([
+                'status' => OrderStatus::REQUESTED,
+            ])
+        )->create([
+            'name' => 'Regular User2',
+            'email' => 'user2@example.com',
         ]);
 
         User::factory()->create([

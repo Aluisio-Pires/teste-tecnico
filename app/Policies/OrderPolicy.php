@@ -14,6 +14,14 @@ class OrderPolicy
     /**
      * Determine whether the user can update the order.
      */
+    public function view(User $user, Order $order): bool
+    {
+        return $user->hasPermissionTo('view-all-orders') || $order->user_id === $user->id;
+    }
+
+    /**
+     * Determine whether the user can update the order.
+     */
     public function update(User $user, Order $order): bool
     {
         return $user->hasPermissionTo('update-order') && $order->user_id !== $user->id;

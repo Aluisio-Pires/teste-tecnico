@@ -71,6 +71,13 @@ class OrderService
         /** @var Builder<Order> $query */
         $query = Order::query();
 
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (! $user->hasPermissionTo('view-all-orders')) {
+            $query->where('user_id', $user->id);
+        }
+
         if ($status) {
             $query->withStatus($status);
         }
